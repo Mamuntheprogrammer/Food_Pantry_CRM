@@ -13,3 +13,8 @@ from . import models
 
 def home(request):
     return render(request,'user_management\home.html')
+
+
+
+def signup(request):
+    return render(request,'user_management\signup.html')

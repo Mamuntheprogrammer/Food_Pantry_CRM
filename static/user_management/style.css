@@ -86,3 +86,25 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+
+
+/* css for registration page  */
+
+
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* Ensure padding doesn't mess with width */
+    display: block; /* Ensure it doesn't have layout issues */
+}
+
+input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
