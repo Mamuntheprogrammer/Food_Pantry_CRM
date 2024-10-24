@@ -1,0 +1,88 @@
+/* user_management/static/user_management/styles.css */
+
+* {
+    box-sizing: border-box; /* Ensure padding and border are included in total width and height */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
+    background-color: #e0e7ff; /* Light blue background color */
+    background-image: url('your-background-image-url.jpg'); /* Optional background image */
+    background-size: cover; /* Cover the whole page with the image */
+    background-position: center; /* Center the background image */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    color: #333;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow for depth */
+    width: 300px;/* Slightly wider for more space */
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #007bff; /* Professional blue color */
+    font-size: 24px; /* Increased font size for the heading */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: 600; /* Bold labels for better visibility */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px; /* Increased padding for comfort */
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff; /* Highlight border on focus */
+    outline: none; /* Remove default outline */
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold; /* Bold text for the button */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+p {
+    margin-top: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500; /* Slightly bolder link text */
+}
+
+a:hover {
+    text-decoration: underline;
+}

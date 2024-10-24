@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Login</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'user_management/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Food Pantry System</h2>
+
+        <!-- Login form -->
+        <form method="post" action="">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <!-- Forgot password and Sign up links -->
+        <p>
+            <a href="">Forgot Password?</a> |
+            <a href="">Sign Up</a>
+        </p>
+    </div>
+</body>
+</html>
