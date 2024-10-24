@@ -1,0 +1,112 @@
+/* Navbar Styles */
+.navbar {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 0;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.navbar-left h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.navbar-right .logout-btn {
+    background-color: white;
+    color: #007bff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-right .logout-btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Profile Content Styles */
+.profile-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 50px auto;
+    text-align: left;
+}
+
+.profile-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.profile-container .form-group {
+    margin-bottom: 15px;
+}
+
+.profile-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.profile-container input[type="text"],
+.profile-container input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.profile-container input[type="text"]:focus,
+.profile-container input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.profile-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.profile-container button:hover {
+    background-color: #0056b3;
+}
+
+
+#message-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #f8d7da; /* Light red background for error messages */
+    color: #721c24; /* Dark red text */
+    padding: 10px;
+    border: 1px solid #f5c6cb; /* Red border */
+    border-radius: 5px;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.message {
+    margin: 0; /* No margin for individual messages */
+}

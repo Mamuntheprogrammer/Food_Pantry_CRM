@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/styles.css' %}">
+</head>
+
+
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <h1>Welcome, {{ user.username }}</h1> <!-- Display the logged-in user's username -->
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'update_profile' %}" class="logout-btn">Update Profile</a>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% if messages %}
+    <div id="message-container">
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+  
+    </div>
+
+
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select the message container
+            const messageContainer = document.getElementById('message-container');
+    
+            // Check if the message container exists
+            if (messageContainer) {
+                // Set a timeout to hide the message after 5 seconds (5000 milliseconds)
+                setTimeout(function() {
+                    messageContainer.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+    
+</body>
+</html>

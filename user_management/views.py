@@ -8,12 +8,24 @@ from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.urls import reverse
 from . import models
+from .forms import UpdateProfileForm
 
 
 
 def home(request):
-    return render(request,'user_management\home.html')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('profile')
+        else:
+            messages.error(request, "Invalid Username Or Password")
+            return redirect('home')
+
+    return render(request, 'user_management\home.html') 
 
 
 def signup(request):
@@ -40,8 +52,7 @@ def signup(request):
         
         if user_data_err:
             return redirect('signup')
-        
-        if not user_data_err:
+        else:
             new_user = User.objects.create_user(
                 first_name =first_name,
                 last_name = last_name,
@@ -49,12 +60,37 @@ def signup(request):
                 email = email,
                 password = password,
             )
-            messages.success(request, "Accound Created ! Please Login Now")
+            messages.success(request, "Account Created ! Please Login Now")
             return redirect('home')
-        
-
-        
-
-
-
     return render(request,'user_management\signup.html')
+
+
+
+@login_required  
+def profile(request):
+    return render(request, 'user_management\profile.html') 
+
+
+def logoutview(request):
+
+    logout(request)
+
+    return redirect('home')
+
+
+  
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been successfully updated!')
+            return redirect('profile')  # Redirect to the profile page
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = UpdateProfileForm(instance=request.user)
+
+    return render(request, 'user_management/update_profile.html', {'form': form})

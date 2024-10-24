@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/styles.css' %}">
+</head>
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <h1>Welcome, {{ user.username }}</h1> <!-- Display the logged-in user's username -->
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'update_profile' %}" class="logout-btn">Update Profile</a>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Update Profile Content -->
+    <div class="profile-container">
+        <h2>Update Your Profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+</body>
+</html>

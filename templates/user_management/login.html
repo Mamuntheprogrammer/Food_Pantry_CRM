@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Login</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'user_management/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'user_management/style.css' %}">
 </head>
 <body>
     <div class="container">
         <h2>Food Pantry System</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <center><h4 style="color: firebrick;">{{message}}</h4></center>
+            {% else %}
+                <center><h4 style="color: dodgerblue;">{{message}}</h4></center>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
         <!-- Login form -->
         <form method="post" action="">
