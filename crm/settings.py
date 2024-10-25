@@ -13,9 +13,23 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+import environ
+
+
+# Initialize environment variables
+env = environ.Env(
+    # Set default values and casting
+    DEBUG=(bool, False)
+)
+
+# Read .env file
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -134,5 +148,5 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 465  # This is correct for SSL; for TLS, use 587
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False  # Only needed if you change to port 587
-EMAIL_HOST_USER="a.a.mamunbu@gmail.com"
-EMAIL_HOST_PASSWORD="cdzs wudb jnhk slau"
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
