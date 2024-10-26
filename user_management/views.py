@@ -19,6 +19,8 @@ def home(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if request.user.is_staff:
+                return render(request, 'user_management/admin_profile.html')
             return redirect('profile')
         else:
             messages.error(request, "Invalid Username Or Password")
