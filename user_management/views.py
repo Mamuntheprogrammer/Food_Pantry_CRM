@@ -20,7 +20,7 @@ def home(request):
         if user is not None:
             login(request, user)
             if request.user.is_staff:
-                return render(request, 'user_management/admin_profile.html')
+                return redirect('adprofile')
             return redirect('profile')
         else:
             messages.error(request, "Invalid Username Or Password")
@@ -70,6 +70,9 @@ def signup(request):
 def profile(request):
     return render(request, 'user_management/profile.html')
 
+@login_required
+def adprofile(request):
+    return render(request, 'user_management/admin_profile.html')
 
 def logoutview(request):
     logout(request)
