@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navbar Section -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <h1>Welcome, {{ user.username }}</h1> <!-- Display the logged-in user's username -->
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'update_profile' %}" class="logout-btn">Update Profile</a>
+                <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% if messages %}
+        <div id="message-container">
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Content Section -->
+
+    {% block content %}
+
+<div class="content">
+    <h2>Order Management</h2>
+    
+    <!-- Create Order Button -->
+
+    <form method="post" action="{% url 'create_order' %}" class="order-form">
+        {% csrf_token %}
+        
+        <h2 class="form-title">Create Order</h2>
+        
+        <div class="form-group">
+            <label for="products">Select Products</label>
+        </div>
+        
+        <h4>Product Quantities</h4>
+        <div class="form-group quantities">
+            {% for product in form.products.field.queryset %}
+                <div class="quantity-input">
+                    <label class="product-label">
+                        <input type="checkbox" name="products" value="{{ product.id }}" /> <!-- Checkbox for product -->
+                        {{ product.name }}
+                    </label>
+                    <input type="number" name="quantity_{{ product.id }}" min="1" value="1" class="quantity-field" />
+                </div>
+            {% endfor %}
+        </div>
+    
+        <label for="delivery_date">Delivery Date</label>
+        <div class="date-input">
+            {{ form.delivery_date }} 
+            <i class="fas fa-calendar-alt calendar-icon"></i>
+        </div>
+        
+        <div class="form-group">
+            <label for="delivery_address">Delivery Address</label>
+            {{ form.delivery_address }}
+        </div>
+    
+        <div class="form-group">
+            <label for="note">Notes</label>
+            {{ form.note }}
+        </div>
+    
+        <button type="submit" class="submit-button">Place Order</button>
+    </form>
+    
+{% endblock %} 
+<!-- JavaScript for Toggling Order Form -->
+
+</body>
+</html>
+
+
+

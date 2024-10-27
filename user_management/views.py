@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,11 @@ from django.utils import timezone
 from django.urls import reverse
 from .models import PasswordReset
 from .forms import UpdateProfileForm
+from .forms import OrderForm
+import random
+import string
+from django.db.models import Max
+from .models import Order,OrderItem
 
 
 def home(request):
@@ -68,7 +73,8 @@ def signup(request):
 
 @login_required
 def profile(request):
-    return render(request, 'user_management/profile.html')
+    user_orders = Order.objects.filter(user=request.user)
+    return render(request, 'user_management/profile.html', {'user_orders': user_orders})
 
 @login_required
 def adprofile(request):
@@ -187,3 +193,78 @@ def resetPassword(request, reset_id):
 
     return render(request, 'user_management/reset_password.html')
 
+
+ # Adjust the import based on your model's location
+
+def generate_order_number():
+    """Generate a new order number based on the last order number."""
+    last_order = Order.objects.aggregate(Max('order_number'))  # Adjust field name if needed
+    last_order_number = last_order['order_number__max']
+
+    if last_order_number is None:
+        new_order_number = 1  # Start from 1 if no orders exist
+    else:
+        new_order_number = int(last_order_number) + 1  # Increment last order number
+
+    return str(new_order_number)  # Convert it back to string
+
+
+
+
+@login_required
+def create_order(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            selected_products = form.cleaned_data['products']
+            insufficient_stock = []
+            quantities = {f'quantity_{product.id}': request.POST.get(f'quantity_{product.id}') for product in selected_products}
+
+            # Check stock and create order
+            for product in selected_products:
+                quantity = int(quantities[f'quantity_{product.id}'])
+                if product.stock_quantity < quantity:
+                    insufficient_stock.append(product.name)
+                else:
+                    # Create order and order items
+                    order = form.save(commit=False)
+                    order.user = request.user
+                    order.order_number = generate_order_number()  # Implement this function
+                    order.save()
+                    OrderItem.objects.create(order=order, product=product, quantity=quantity)
+                    product.stock_quantity -= quantity  # Decrement stock by the quantity ordered
+                    product.save()
+
+            if insufficient_stock:
+                messages.error(request, f'Stock not available for: {", ".join(insufficient_stock)}')
+                return redirect('create_order')
+
+            messages.success(request, 'Order created successfully!')
+            return redirect('profile')  # Redirect to profile after order creation
+    else:
+        form = OrderForm()
+    return render(request, 'user_management/create_order.html', {'form': form})
+
+
+def edit_order(request, id):
+    order = get_object_or_404(Order, id=id)
+    
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Order updated successfully!')
+            return redirect('profile')  # Redirect to the profile page
+    else:
+        form = OrderForm(instance=order)
+
+    return render(request, 'user_management/edit_order.html', {'form': form, 'order': order})
+
+
+def delete_order(request, id):
+    order = get_object_or_404(Order, id=id)
+    if request.method == 'POST':
+        order.delete()
+        messages.success(request, 'Order deleted successfully!')
+        return redirect('profile')  # Redirect to profile after deletion
+    return render(request, 'user_management/delete_confirmation.html', {'order': order})

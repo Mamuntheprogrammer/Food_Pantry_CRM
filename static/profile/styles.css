@@ -110,3 +110,120 @@
 .message {
     margin: 0; /* No margin for individual messages */
 }
+
+
+
+
+/* --------- */
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.order-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.quantities {
+    display: flex;
+    flex-direction: column;
+}
+
+.quantity-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between label and input */
+    margin-bottom: 10px; /* Space between quantity fields */
+}
+
+.product-label {
+    margin-right: 10px; /* Space between label and input */
+    flex-grow: 1; /* Allow label to take available space */
+}
+
+.quantity-field {
+    width: 60px; /* Fixed width for quantity input */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input[type="date"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+    resize: vertical;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+.date-input {
+    position: relative; /* To position the icon */
+}
+
+.date-input input[type="date"] {
+    padding-right: 30px; /* Space for the calendar icon */
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 10px; /* Space from the right edge */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust vertical alignment */
+    pointer-events: none; /* Prevent clicks on the icon */
+    color: #999; /* Color for the icon */
+}

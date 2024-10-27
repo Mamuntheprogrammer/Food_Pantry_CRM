@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'profile/styles.css' %}">
 </head>
 
-
 <body>
     <!-- Navbar Section -->
     <nav class="navbar">
@@ -22,34 +21,73 @@
             </div>
         </div>
     </nav>
+
+    <!-- Flash Messages -->
     {% if messages %}
-    <div id="message-container">
-        {% for message in messages %}
-            <div class="message">{{ message }}</div>
-        {% endfor %}
-    </div>
+        <div id="message-container">
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Content Section -->
+<div class="content">
+    <h2>Order Management</h2>
+    
+    <!-- Create Order Button -->
+    <button>
+        <!-- Create Order Button as Link -->
+<a href="{% url 'create_order' %}" class="create-order-btn">+ Create Order</a>
+
+    </button>
+    
+
+
+    <h3>Your Orders</h3>
+{% if user_orders %}
+    <p>Number of Orders: {{ user_orders|length }}</p>  <!-- Add this line to debug -->
+    <table>
+        <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Products</th>
+                <th>Delivery Date</th>
+                <th>Delivery Address</th>
+                <th>Note</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in user_orders %}
+                <tr>
+                    <td>{{ order.order_number }}</td>
+                    <td>
+                        {% for item in order.items.all %}  <!-- Use `items` related name -->
+                            {{ item.product.name }}{% if item.product.stock_quantity <= 0 %} (Out of Stock){% endif %}<br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ order.delivery_date }}</td>
+                    <td>{{ order.delivery_address|default:"N/A" }}</td>
+                    <td>{{ order.note|default:"N/A" }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>
+                        {% if order.status == "Pending" %}
+                            <a href="{% url 'edit_order' order.id %}" class="edit-btn">Edit</a>
+                            <a href="{% url 'delete_order' order.id %}" class="delete-btn">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You have no orders yet.</p>
 {% endif %}
 
 
-  
-    </div>
+<!-- JavaScript for Toggling Order Form -->
 
-
-    <script>
-        // Wait for the DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Select the message container
-            const messageContainer = document.getElementById('message-container');
-    
-            // Check if the message container exists
-            if (messageContainer) {
-                // Set a timeout to hide the message after 5 seconds (5000 milliseconds)
-                setTimeout(function() {
-                    messageContainer.style.display = 'none';
-                }, 5000);
-            }
-        });
-    </script>
-    
 </body>
 </html>

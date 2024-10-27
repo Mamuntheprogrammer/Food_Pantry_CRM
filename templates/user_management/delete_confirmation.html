@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Order Confirmation</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/styles.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <h1>Order Deletion</h1>
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'profile' %}" class="logout-btn">Back to Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- user_management/delete_confirmation.html -->
+
+<h2>Confirm Order Deletion</h2>
+<p>Are you sure you want to delete order {{ order.order_number }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete this order</button>
+    <a href="{% url 'profile' %}">Cancel</a>
+</form>
+
+
+</body>
+</html>

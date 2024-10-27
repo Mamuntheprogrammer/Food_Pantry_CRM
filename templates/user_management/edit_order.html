@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Order</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/styles.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <h1>Edit Order for {{ order.order_number }}</h1>
+            </div>
+            <div class="navbar-right">
+                <a href="{% url 'profile' %}" class="logout-btn">Back to Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+        <h2>Edit Order</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Render the form fields here -->
+            <button type="submit">Update Order</button>
+        </form>
+    </div>
+</body>
+</html>

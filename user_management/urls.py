@@ -15,4 +15,8 @@ urlpatterns = [
     path('forgot-password/', views.forgotPassword, name='forgot-password'),
     path('password-reset-sent/<str:reset_id>/', views.passwordResetSent, name='password-reset-sent'),
     path('reset-password/<str:reset_id>/', views.resetPassword, name='reset-password'),
+
+    path('create-order/', views.create_order, name='create_order'),
+    path('edit-order/<int:id>/', views.edit_order, name='edit_order'),  # Edit order URL
+    path('delete-order/<int:id>/', views.delete_order, name='delete_order'),  # Delete order URL
 ]
