@@ -45,17 +45,14 @@
 
 
     <h3>Your Orders</h3>
+
 {% if user_orders %}
-    <p>Number of Orders: {{ user_orders|length }}</p>  <!-- Add this line to debug -->
-    <table>
+    <p>Number of Orders: {{ user_orders|length }}</p>
+    <table class="order-table">
         <thead>
             <tr>
                 <th>Order Number</th>
-                <th>Products</th>
                 <th>Delivery Date</th>
-                <th>Delivery Address</th>
-                <th>Note</th>
-                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -63,19 +60,13 @@
             {% for order in user_orders %}
                 <tr>
                     <td>{{ order.order_number }}</td>
-                    <td>
-                        {% for item in order.items.all %}  <!-- Use `items` related name -->
-                            {{ item.product.name }}{% if item.product.stock_quantity <= 0 %} (Out of Stock){% endif %}<br>
-                        {% endfor %}
-                    </td>
-                    <td>{{ order.delivery_date }}</td>
-                    <td>{{ order.delivery_address|default:"N/A" }}</td>
-                    <td>{{ order.note|default:"N/A" }}</td>
-                    <td>{{ order.status }}</td>
+                    <td>{{ order.delivery_date|date:"Y-m-d" }}</td>
                     <td>
                         {% if order.status == "Pending" %}
-                            <a href="{% url 'edit_order' order.id %}" class="edit-btn">Edit</a>
-                            <a href="{% url 'delete_order' order.id %}" class="delete-btn">Delete</a>
+                            <a href="{% url 'edit_order' order.id %}" class="btn edit-btn">Edit</a>
+                            <a href="{% url 'delete_order' order.id %}" class="btn delete-btn">Delete</a>
+                        {% else %}
+                            <span class="completed">Completed</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -85,6 +76,7 @@
 {% else %}
     <p>You have no orders yet.</p>
 {% endif %}
+
 
 
 <!-- JavaScript for Toggling Order Form -->

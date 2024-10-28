@@ -227,3 +227,64 @@ textarea {
     pointer-events: none; /* Prevent clicks on the icon */
     color: #999; /* Color for the icon */
 }
+
+
+/* -------- */
+
+/* General Table Styling */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.order-table th,
+.order-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.order-table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+.order-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Actions Buttons */
+.btn {
+    padding: 6px 12px;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    color: #fff;
+    transition: background-color 0.2s;
+    margin-right: 5px;
+}
+
+.edit-btn {
+    background-color: #4CAF50;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.edit-btn:hover {
+    background-color: #45a049;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Completed Status */
+.completed {
+    color: #555;
+    font-style: italic;
+}

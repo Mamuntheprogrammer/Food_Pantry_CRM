@@ -26,7 +26,7 @@ class Order(models.Model):
     delivery_address = models.CharField(max_length=255, blank=True)
     note = models.TextField(blank=True)
     order_number = models.CharField(max_length=20, unique=True)
-    status = models.CharField(max_length=10, choices=[('Pending', 'Pending'), ('Delivered', 'Delivered')], default='Pending')
+    status = models.CharField(max_length=10, choices=[('Pending', 'Pending'), ('Approve', 'Approved')], default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
