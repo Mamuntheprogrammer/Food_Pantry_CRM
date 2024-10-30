@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="{% static 'user_management\style.css'%}" />
+    <link rel="stylesheet" href="{% static 'stock_management\styles.css'%}" />
     <!-- <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -16,8 +16,69 @@
   </head>
   <body>
 
-    {% include 'user_management/login.html'%}
+
      {% block content %} 
+
+       <!-- Display Success or Error Messages -->
+    {% if messages %}
+    <div class="message-container">
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+     <h2>Stock Management</h2>
+    <p>Total Unique Products: {{ unique_products }}</p>
+    <p>Total Products Count: {{ total_count }}</p>
+
+    <!-- File Upload Form -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload Stock</button>
+    </form>
+
+  
+
+    <!-- Product Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>Name</th>
+                <th>Batch</th>
+                <th>Quantity</th>
+                <th>Buying Price</th>
+                <th>Selling Price</th>
+                <th>Measurement Unit</th>
+                <th>Expire Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.product_code }}</td>
+                    <td>{{ product.product_name }}</td>
+                    <td>{{ product.batch }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ product.buying_price_per_unit }}</td>
+                    <td>{{ product.selling_price_per_unit }}</td>
+                    <td>{{ product.measurement_unit }}</td>
+                    <td>{{ product.expire_date }}</td>
+                    <td>{{ product.status }}</td>
+                    <td>
+                        <a href="{% url 'block_product' product.id %}">Block</a> |
+                        <a href="{% url 'activate_product' product.id %}">Activate</a> |
+                        <a href="{% url 'edit_product' product.id %}">Edit</a> |
+                        <a href="{% url 'delete_product' product.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% endblock %}
 
     
