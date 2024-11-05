@@ -1,5 +1,5 @@
 from django.db import models
-
+from vendor_management.models import Vendor
 class Product(models.Model):
     MEASUREMENT_CHOICES = [
         ('box', 'Box'),
@@ -21,6 +21,7 @@ class Product(models.Model):
     status = models.CharField(max_length=10, choices=[('active', 'Active'), ('blocked', 'Blocked')], default='blocked')
     upload_date = models.DateField(auto_now_add=True)
     expire_date = models.DateField()
+    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)  # Link to Vendor
 
     def __str__(self):
         return f"{self.product_name} - {self.product_code}"

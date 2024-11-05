@@ -14,6 +14,7 @@ import random
 import string
 from django.db.models import Max
 from .models import Order,OrderItem
+from stock_management.models import Product
 
 
 def home(request):
@@ -220,51 +221,96 @@ def create_order(request):
             insufficient_stock = []
             quantities = {f'quantity_{product.id}': request.POST.get(f'quantity_{product.id}') for product in selected_products}
 
-            # Check stock and create order
+            # Check stock availability and create order
             for product in selected_products:
                 quantity = int(quantities[f'quantity_{product.id}'])
-                if product.stock_quantity < quantity:
-                    insufficient_stock.append(product.name)
+                if product.quantity < quantity:  # Check if the available stock is less than ordered quantity
+                    insufficient_stock.append(product.product_name)
                 else:
-                    # Create order and order items
+                    # Create the order
                     order = form.save(commit=False)
                     order.user = request.user
-                    order.order_number = generate_order_number()  # Implement this function
+                    order.order_number = generate_order_number()  # Implement this function to generate order number
                     order.save()
+
+                    # Create OrderItem for each product and reduce stock quantity
                     OrderItem.objects.create(order=order, product=product, quantity=quantity)
-                    product.stock_quantity -= quantity  # Decrement stock by the quantity ordered
+                    product.quantity -= quantity  # Deduct the stock
                     product.save()
 
             if insufficient_stock:
+                # Notify user if some products don't have enough stock
                 messages.error(request, f'Stock not available for: {", ".join(insufficient_stock)}')
                 return redirect('create_order')
 
+            # Success message
             messages.success(request, 'Order created successfully!')
-            return redirect('profile')  # Redirect to profile after order creation
+            return redirect('profile')  # Redirect to user profile after order creation
+
     else:
         form = OrderForm()
+
     return render(request, 'user_management/create_order.html', {'form': form})
 
 
+@login_required
 def edit_order(request, id):
     order = get_object_or_404(Order, id=id)
     
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
+            # Get previous order items to track stock adjustments
+            previous_items = OrderItem.objects.filter(order=order)
+            previous_quantities = {item.product: item.quantity for item in previous_items}
+
+            # Save the form
             form.save()
+
+            # Handle stock updates:
+            updated_items = form.cleaned_data['products']
+            quantities = {f'quantity_{product.id}': request.POST.get(f'quantity_{product.id}') for product in updated_items}
+
+            # Update stock for modified quantities
+            for product in updated_items:
+                new_quantity = int(quantities[f'quantity_{product.id}'])
+                old_quantity = previous_quantities.get(product, 0)
+
+                if new_quantity != old_quantity:
+                    # Adjust stock based on the difference in quantities
+                    if new_quantity > old_quantity:
+                        if product.quantity < (new_quantity - old_quantity):
+                            messages.error(request, f"Insufficient stock for {product.product_name}.")
+                            return redirect('edit_order', id=id)
+                        product.quantity -= (new_quantity - old_quantity)  # Reduce stock if more ordered
+                    else:
+                        product.quantity += (old_quantity - new_quantity)  # Increase stock if less ordered
+                    product.save()
+
             messages.success(request, 'Order updated successfully!')
-            return redirect('profile')  # Redirect to the profile page
+            return redirect('profile')
+
     else:
         form = OrderForm(instance=order)
 
     return render(request, 'user_management/edit_order.html', {'form': form, 'order': order})
 
 
+@login_required
 def delete_order(request, id):
     order = get_object_or_404(Order, id=id)
+
     if request.method == 'POST':
+        # Revert the stock quantities for the order items
+        order_items = OrderItem.objects.filter(order=order)
+        for item in order_items:
+            product = item.product
+            product.quantity += item.quantity  # Increase stock when order is deleted
+            product.save()
+
+        # Delete the order and associated order items
         order.delete()
         messages.success(request, 'Order deleted successfully!')
         return redirect('profile')  # Redirect to profile after deletion
+
     return render(request, 'user_management/delete_confirmation.html', {'order': order})

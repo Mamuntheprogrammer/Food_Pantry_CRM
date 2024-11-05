@@ -1,31 +1,19 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
     background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-h2 {
+h1, h2 {
     color: #333;
+    margin-bottom: 20px;
 }
 
-.message-container {
-    margin: 10px 0;
-}
-
-.message {
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    color: #fff;
-}
-
-.message.success {
-    background-color: #4caf50; /* Green */
-}
-
-.message.error {
-    background-color: #f44336; /* Red */
+h1 {
+    text-align: center;
+    margin-top: 30px;
 }
 
 /* Form styles */
@@ -64,51 +52,73 @@ form input[type="file"] {
     margin-bottom: 20px;
 }
 
+/* Vendor List section */
+.vendor-list {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-table {
+.vendor-list h2 {
+    font-size: 1.4em;
+    color: #333;
+}
+
+.vendor-list a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+.vendor-list a:hover {
+    text-decoration: underline;
+}
+
+.vendor-list table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-th, td {
-    padding: 12px;
+.vendor-list th, .vendor-list td {
+    padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-th {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
+.vendor-list th {
+    background-color: #f2f2f2;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
+.vendor-list td a {
+    color: #007BFF;
+    text-decoration: none;
 }
 
+.vendor-list td a:hover {
+    text-decoration: underline;
+}
+
+/* Utility classes */
+.text-center {
+    text-align: center;
+}
+
+/* Button styling */
 button {
-    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
     cursor: pointer;
-    font-size: 16px;
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker shade */
-}
-
-a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-a:hover {
-    text-decoration: underline;
+    background-color: #0056b3;
 }
 
 
@@ -144,22 +154,4 @@ a:hover {
 .navbar-right .logout-btn:hover {
     background-color: #0056b3;
     color: white;
-}
-
-
-
-.product-summary {
-    background-color: #f9f9f9; /* Light gray background for the summary */
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-}
-
-.product-summary p {
-    font-size: 1.1em;
-    color: #333;
-    margin: 5px 0;
-}
-
-.product-summary strong {
-    color: #007BFF;
 }

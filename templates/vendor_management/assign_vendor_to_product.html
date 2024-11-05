@@ -1,0 +1,15 @@
+<!-- vendor_management/assign_vendor_to_product.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h1>Assign Vendor to Product: {{ product.product_name }}</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Assign Vendor</button>
+  </form>
+
+  <br>
+  <a href="{% url 'vendor_management_home' %}">Back to Vendor Management</a>
+{% endblock %}

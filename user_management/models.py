@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from stock_management.models import Product
 
 class PasswordReset(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -11,12 +12,12 @@ class PasswordReset(models.Model):
     def __str__(self):
         return f"Password reset for {self.user.username} at {self.created_when}"
 
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    stock_quantity = models.IntegerField()
+# class Product(models.Model):
+#     name = models.CharField(max_length=100)
+#     stock_quantity = models.IntegerField()
 
-    def __str__(self):
-        return f"{self.name} (Stock: {self.stock_quantity})"
+#     def __str__(self):
+#         return f"{self.name} (Stock: {self.stock_quantity})"
 
 
 class Order(models.Model):

@@ -5,12 +5,8 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import Product
 from .forms import StockUploadForm
+from vendor_management.models import Vendor
 
-
-
-# # Create your views here.
-# def stock_management_home(request):
-#     return render(request, 'stock_management/home.html')
 
 
 def stock_management_home(request):
@@ -25,11 +21,23 @@ def stock_management_home(request):
             file = form.cleaned_data['file']
             try:
                 df = pd.read_excel(file)
-                
+
                 # Print column names to debug
                 print("Excel columns:", df.columns.tolist())
-                
+
                 for _, row in df.iterrows():
+                    # Retrieve the vendor number from the uploaded file
+                    vendor_number = row.get('Vendor Number','')
+
+                    # Look up the vendor based on the vendor number (if provided)
+                    vendor = None
+                    if vendor_number:
+                        try:
+                            # Find the vendor by vendor_number
+                            vendor = Vendor.objects.get(vendor_number=vendor_number)
+                        except Vendor.DoesNotExist:
+                            vendor = None  # If vendor is not found, you can handle this case (log, etc.)
+
                     # Use .get() and .strip() to handle any extra spaces
                     Product.objects.update_or_create(
                         product_code=row.get('Product Code', '').strip(),
@@ -41,9 +49,11 @@ def stock_management_home(request):
                             'selling_price_per_unit': row.get('Selling Price per Unit', 0.0),
                             'measurement_unit': row.get('Measurement Unit', 'pcs').strip(),
                             'expire_date': row.get('Expire Date', None),
-                            'status': 'active'
+                            'status': 'active',
+                            'vendor': vendor,  # Associate vendor if found
                         }
                     )
+
                 messages.success(request, "Stock uploaded successfully.")
             except Exception as e:
                 messages.error(request, f"Error processing file: {e}")
@@ -57,7 +67,6 @@ def stock_management_home(request):
         'total_count': total_count,
         'unique_products': unique_products
     })
-
 
 
 

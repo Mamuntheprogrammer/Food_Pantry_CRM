@@ -1,0 +1,15 @@
+<!-- vendor_management/vendor_form.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h1>{% if vendor %}Edit Vendor{% else %}Create Vendor{% endif %}</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if vendor %}Update Vendor{% else %}Create Vendor{% endif %}</button>
+  </form>
+
+  <br>
+  <a href="{% url 'vendor_management_home' %}">Back to Vendor List</a>
+{% endblock %}

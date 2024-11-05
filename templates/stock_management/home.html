@@ -5,41 +5,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="{% static 'stock_management\styles.css'%}" />
-    <!-- <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    /> -->
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'stock_management/styles.css'%}" />
+    <title>Stock Management</title>
+
+    
   </head>
   <body>
 
+    <header>
+      
+        <nav class="navbar">
+          <div class="navbar-container">
+              <div class="navbar-left">
+                  <h1>{{ user.username }}</h1> 
+              </div>
+              <div class="navbar-right">
+                  <a href="{% url 'adprofile' %}" class="logout-btn">DashBoard</a>
+                  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+              </div>
+          </div>
+      </nav>
+  
+      </header>
 
-     {% block content %} 
+    {% block content %} 
 
-       <!-- Display Success or Error Messages -->
+    <!-- Display Success or Error Messages -->
     {% if messages %}
     <div class="message-container">
         {% for message in messages %}
             <div class="message">{{ message }}</div>
         {% endfor %}
     </div>
-{% endif %}
+    {% endif %}
 
-     <h2>Stock Management</h2>
-    <p>Total Unique Products: {{ unique_products }}</p>
-    <p>Total Products Count: {{ total_count }}</p>
+
 
     <!-- File Upload Form -->
     <form method="post" enctype="multipart/form-data">
+        <h2>Stock Management</h2>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Upload Stock</button>
     </form>
 
-  
+    <div class="product-summary">
+        <p><strong>Total Unique Products:</strong> {{ unique_products }}</p>
+        <p><strong>Total Products Count:</strong> {{ total_count }}</p>
+      </div>
 
     <!-- Product Table -->
     <table>
@@ -54,6 +67,7 @@
                 <th>Measurement Unit</th>
                 <th>Expire Date</th>
                 <th>Status</th>
+                <th>Vendor</th> <!-- Added Vendor Column -->
                 <th>Actions</th>
             </tr>
         </thead>
@@ -69,6 +83,16 @@
                     <td>{{ product.measurement_unit }}</td>
                     <td>{{ product.expire_date }}</td>
                     <td>{{ product.status }}</td>
+
+                    <!-- Display Vendor info, assuming `product.vendor` is a ForeignKey to Vendor model -->
+                    <td>
+                        {% if product.vendor %}
+                            {{ product.vendor.vendor_name }} <!-- Assuming `vendor_name` is a field in the Vendor model -->
+                        {% else %}
+                            No Vendor
+                        {% endif %}
+                    </td>
+
                     <td>
                         <a href="{% url 'block_product' product.id %}">Block</a> |
                         <a href="{% url 'activate_product' product.id %}">Activate</a> |
@@ -79,25 +103,8 @@
             {% endfor %}
         </tbody>
     </table>
+
     {% endblock %}
 
-    
-    
   </body>
-
-  <script
-    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"
-  ></script>
 </html>
